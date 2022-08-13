@@ -1,7 +1,7 @@
 FROM rockylinux:9
 RUN dnf upgrade --refresh -y; \
+    dnf install yum-plugin-copr epel-release -y; \
     dnf config-manager --set-enabled crb; \
-    dnf install epel-release -y; \
     dnf install dnf-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm -y; \
     dnf update -y; \
     dnf module enable php:remi-8.1 -y; \
