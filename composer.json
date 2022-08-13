@@ -1,0 +1,15 @@
+{
+    "name": "angus/lpos-infosk-rm",
+    "autoload": {
+        "psr-4": {
+            "Angus\\LposInfoskRm\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Angutivik Casper Rúnur Tausen",
+            "email": "runurth@gmail.com"
+        }
+    ],
+    "require": {}
+}
