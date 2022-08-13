@@ -1,6 +1,7 @@
 FROM rockylinux:9
 RUN dnf upgrade --refresh -y; \
     dnf install yum-plugin-copr epel-release -y; \
+    dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm; \
     dnf config-manager --set-enabled crb; \
     dnf install dnf-utils http://rpms.remirepo.net/enterprise/remi-release-9.rpm -y; \
     dnf update -y; \
