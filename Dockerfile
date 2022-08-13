@@ -10,8 +10,7 @@ RUN dnf upgrade --refresh -y; \
     dnf install php-cli php-curl php-mysqlnd php-gd php-opcache php-zip php-intl php-common php-bcmath php-imap php-imagick php-xmlrpc php-json php-readline php-memcached php-redis php-mbstring php-apcu php-xml php-dom -y; \
     php -v;
 RUN dnf upgrade --refresh -y; \
-    dnf install httpd -y; \
-    systemctl enable httpd --now;
+    dnf install httpd -y;
     # https://www.linuxcapable.com/how-to-install-apache-httpd-on-rocky-linux-9/
 COPY src /var/www/
 COPY config /var/www/
@@ -27,5 +26,5 @@ RUN RUN dnf install curl git zip unzip wget bats jq -y; \
     mv composer.phar ../; \
     cd /var/www/; \
     php composer.phar install;
-
+CMD ["/usr/sbin/httpd", "-DFOREGROUND"]
 
