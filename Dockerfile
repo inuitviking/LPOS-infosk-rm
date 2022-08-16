@@ -7,7 +7,7 @@ RUN dnf upgrade --refresh -y; \
     dnf update -y; \
     dnf module enable php:remi-8.1 -y; \
     dnf install php -y; \
-    dnf install php-cli php-curl php-mysqlnd php-gd php-opcache php-zip php-intl php-common php-bcmath php-imap php-imagick php-xmlrpc php-json php-readline php-memcached php-redis php-mbstring php-apcu php-xml php-dom -y; \
+    dnf install php-cli php-curl php-mysqlnd php-gd php-opcache php-zip php-intl php-common php-bcmath php-imap php-imagick php-xmlrpc php-json php-readline php-memcached php-redis php-mbstring php-apcu php-xml php-dom php81-fpm -y; \
     php -v;
 RUN dnf upgrade --refresh -y; \
     dnf install httpd -y;
