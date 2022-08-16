@@ -27,4 +27,3 @@ RUN dnf install curl git zip unzip wget jq -y; \
     cd /var/www/; \
     php composer.phar install;
 CMD ["/usr/sbin/httpd", "-DFOREGROUND"]
-
