@@ -5,7 +5,7 @@ RUN dnf upgrade --refresh -y; \
     dnf install http://rpms.remirepo.net/enterprise/remi-release-9.rpm -y; \
     dnf update -y; \
     dnf module enable php:remi-8.1 -y; \
-    dnf install php php-cli php-curl php-mysqlnd php-gd php-opcache php-zip php-intl php-common php-bcmath php-imap php-imagick php-xmlrpc php-json php-readline php-memcached php-redis php-mbstring php-apcu php-xml php-dom php81-php-fpm vim httpd curl git zip unzip wget jq -y; \
+    dnf install php php-cli php-curl php-mysqlnd php-gd php-opcache php-zip php-intl php-common php-bcmath php-imap php-imagick php-xmlrpc php-json php-readline php-memcached php-redis php-mbstring php-apcu php-xml php-dom php81-php-fpm vim-enhanced httpd curl git zip unzip wget jq -y; \
     php -v;
 COPY src /var/www/src/
 COPY config /var/www/config/
@@ -20,5 +20,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"; \
     mv composer.phar ../; \
     cd /var/www/; \
     php composer.phar install;
-RUN dnf clean all   # Cleanup cache to take up less space
-CMD ["/usr/sbin/httpd", "-DFOREGROUND"]
+RUN mkdir /run/php-fpm;
+RUN dnf clean all; \
+    rm -rf /etc/httpd/conf.d/php.conf;  # Cleanup cache to take up less space
+CMD php-fpm; /usr/sbin/httpd -DFOREGROUND
