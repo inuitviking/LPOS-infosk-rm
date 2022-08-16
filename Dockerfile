@@ -20,7 +20,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"; \
     mv composer.phar ../; \
     cd /var/www/; \
     php composer.phar install;
-RUN mkdir /run/php-fpm;
+RUN mkdir -p /run/php-fpm;
 RUN dnf clean all; \
     rm -rf /etc/httpd/conf.d/php.conf;  # Cleanup cache to take up less space
 CMD php-fpm; /usr/sbin/httpd -DFOREGROUND
