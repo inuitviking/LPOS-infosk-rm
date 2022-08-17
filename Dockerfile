@@ -37,8 +37,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"; \
     php composer-setup.php install; \
     php -r "unlink('composer-setup.php');"; \
     php composer.phar install;
-# Ensure run/php-fpm directory exists.
-RUN mkdir -p /run/php-fpm;
+# Ensure /run/php-fpm and /var/www/tmp directories exists.
+RUN mkdir -p /run/php-fpm; \
+    mkdir -p /var/www/tmp;
 # Clean dnf caches to save space
 RUN dnf clean all;
 # php-fpm runs in the background, while httpd runs in the foreground, successfully creating a PHP/APACHE image based on Rocky Linux
