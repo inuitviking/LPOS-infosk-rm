@@ -11,5 +11,7 @@
             "email": "runurth@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php-mqtt/client": "^1.4"
+    }
 }
