@@ -3,7 +3,7 @@
 require_once '../vendor/autoload.php';
 
 //$server   = '192.168.80.2';
-$server		= '192.168.95.115';
+$server		= 'mqtt';
 $port		= 8883;
 $clientId = 'infoscreen';
 
