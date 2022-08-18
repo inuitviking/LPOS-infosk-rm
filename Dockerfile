@@ -17,13 +17,14 @@ RUN dnf upgrade --refresh -y; \
     dnf install php php-cli php-curl php-mysqlnd php-gd php-opcache php-zip php-intl php-common php-bcmath php-imap php-imagick php-xmlrpc php-json php-readline php-memcached php-redis php-mbstring php-apcu php-xml php-dom php-fpm vim-enhanced httpd curl git zip unzip wget jq -y; \
     php -v;
 # Copy the backend source files
-COPY src /var/www/src/
+COPY ./src/* /var/www/src/
 # Copy the configuration files
-COPY config /var/www/config/
+COPY ./config/* /var/www/config/
 # Copy the app files
-COPY app /var/www/html/
+COPY ./app/* /var/www/html/
 # Copy composer.json
 COPY composer.json /var/www/
+COPY ./certs /var/www/certs
 # Define the working directory
 WORKDIR /var/www/
 # Do the following:
