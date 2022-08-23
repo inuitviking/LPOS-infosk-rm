@@ -3,7 +3,8 @@
 require_once '../vendor/autoload.php';
 
 //$server   = '192.168.80.2';
-$server		= '192.168.95.115';
+//$server		= '192.168.95.115';
+$server		= '10.135.16.54';
 $port		= 8883;
 $clientId = 'infoscreen';
 
@@ -29,7 +30,7 @@ try {
 }
 
 try {
-	$mqtt->subscribe('/hospital/', function ($topic, $message) {
+	$mqtt->subscribe('hospital/', function ($topic, $message) {
 		echo sprintf("Received message on topic [%s]: %s\n", $topic, $message);
 	}, 0);
 } catch (\PhpMqtt\Client\Exceptions\DataTransferException|\PhpMqtt\Client\Exceptions\RepositoryException $e) {
