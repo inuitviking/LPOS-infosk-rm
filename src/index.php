@@ -2,55 +2,59 @@
 
 require_once '../vendor/autoload.php';
 
-//$server   = '192.168.80.2';
+// Objects
+use PhpMqtt\Client\MqttClient;
+use PhpMqtt\Client\ConnectionSettings;
+// Exceptions
+use PhpMqtt\Client\Exceptions\ConfigurationInvalidException;
+use PhpMqtt\Client\Exceptions\ConnectingToBrokerFailedException;
+use PhpMqtt\Client\Exceptions\DataTransferException;
+use PhpMqtt\Client\Exceptions\InvalidMessageException;
+use PhpMqtt\Client\Exceptions\MqttClientException;
+use PhpMqtt\Client\Exceptions\ProtocolViolationException;
+use PhpMqtt\Client\Exceptions\RepositoryException;
+
+// *************
+// * VARIABLES *
+// *************
+//$server		= '192.168.80.2';
 //$server		= '192.168.95.115';
 $server		= '10.135.16.54';
 $port		= 8883;
-$clientId = 'infoscreen';
+$clientId	= 'infoscreen';
+$clientPass	= '5k1nnyL4773';
 
-echo $server."\n";
-echo $port."\n";
-echo $clientId."\n";
-
-$mqtt = new \PhpMqtt\Client\MqttClient($server, $port, $clientId);
-$connectionSettings = (new \PhpMqtt\Client\ConnectionSettings)
-	->setUsername('infoscreen')
-	->setPassword('5k1nnyL4773')
-	->setUseTls(true)
-	->setTlsSelfSignedAllowed(true)
-	->setTlsCertificateAuthorityFile('../certs/192.168.95.115/ca-root-cert.crt')
-	->setTlsClientCertificateFile('../certs/192.168.80.2_new/client.crt')
-	->setTlsClientCertificateKeyFile('../certs/192.168.80.2_new/client.key');
-
+// ***********
+// * PROGRAM *
+// ***********
 try {
-	$mqtt->connect($connectionSettings, true);
-} catch (\PhpMqtt\Client\Exceptions\ConfigurationInvalidException|\PhpMqtt\Client\Exceptions\ConnectingToBrokerFailedException $e) {
-	echo $e;
-	exit();
+	$mqtt = new MqttClient($server, $port, $clientId);																	// Create MqttClient object
+
+	$connectionSettings = (new ConnectionSettings)																		// Create a ConnectionSettings object
+		->setUsername($clientId)																						// Set username
+		->setPassword($clientPass)																						// Set password
+		->setUseTls(true)																						// Use TLS
+		->setTlsSelfSignedAllowed(true)																// Allow self-signed certificates
+		->setTlsCertificateAuthorityFile('../certs/192.168.95.115/ca-root-cert.crt')			// Root certificate for the client and server certificate
+		->setTlsClientCertificateFile('../certs/192.168.80.2_new/client.crt')					// Set client certificate
+		->setTlsClientCertificateKeyFile('../certs/192.168.80.2_new/client.key');				// Set client certificate key
+
+	$mqtt->connect($connectionSettings, true);															// Connect to the MQTT broker with the above connection settings and with a clean session.
+
+	$mqtt->subscribe('hospital/#', function ($topic, $message) {											// Recursively subscribe to hospital/
+		echo sprintf("%s:%s\n", $topic, $message);																// Print the topic and message whenever we receive a message
+	}, 0);																								// Set the QoS to 0
+
+	$mqtt->loop(true);																						// Continuously listen for messages
+	$mqtt->disconnect();																								// Properly disconnect from the broker if three CTRL+C are detected
+
+} catch (ConfigurationInvalidException |																				// Catch any exception that may occur in any of the functions used above.
+		 ConnectingToBrokerFailedException |
+		 DataTransferException |
+		 RepositoryException |
+		 InvalidMessageException |
+		 ProtocolViolationException |
+		 MqttClientException $e) {
+	echo $e;																											// Echo the error
+	exit(0);																											// Exit the program with exit code 0
 }
-
-try {
-	$mqtt->subscribe('hospital/#', function ($topic, $message) {
-		echo sprintf("Received message on topic [%s]: %s\n", $topic, $message);
-	}, 0);
-} catch (\PhpMqtt\Client\Exceptions\DataTransferException|\PhpMqtt\Client\Exceptions\RepositoryException $e) {
-	echo $e;
-	exit();
-}
-
-
-try {
-	$mqtt->loop(true);
-} catch (\PhpMqtt\Client\Exceptions\DataTransferException|\PhpMqtt\Client\Exceptions\InvalidMessageException|\PhpMqtt\Client\Exceptions\ProtocolViolationException|\PhpMqtt\Client\Exceptions\MqttClientException $e) {
-	echo $e;
-	exit();
-}
-
-try {
-	$mqtt->disconnect();
-} catch (\PhpMqtt\Client\Exceptions\DataTransferException $e) {
-	echo $e;
-	exit();
-}
-
-
