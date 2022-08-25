@@ -12,6 +12,7 @@
         }
     ],
     "require": {
-        "php-mqtt/client": "^1.4"
+        "php-mqtt/client": "^1.4",
+        "gotzmann/comet": "^2.3"
     }
 }
