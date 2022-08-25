@@ -8,7 +8,13 @@ $app = new Comet\Comet([
 
 $app->get('/json',
 	function ($request, $response) {
-		$data = [ "message" => "Hello, Comet!" ];
+		$file = 'mqtt.csv';
+		$f = fopen($file, 'r');
+		$data = [];
+		while (($row = fgetcsv($f)) !== false) {
+			$data[] = $row;
+		}
+		fclose($f);
 		return $response
 			->with($data);
 	});

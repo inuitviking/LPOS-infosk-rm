@@ -19,10 +19,13 @@ use PhpMqtt\Client\Exceptions\RepositoryException;
 // *************
 //$server		= '192.168.80.2';
 //$server		= '192.168.95.115';
-$server		= '10.135.16.54';
+//$server		= '10.135.16.54';
+$server		= '192.168.80.17';
 $port		= 8883;
 $clientId	= 'infoscreen';
 $clientPass	= '5k1nnyL4773';
+//$clientIP 	= '192.168.95.115';
+$clientIP	= '192.168.80.43';
 
 // ***********
 // * PROGRAM *
@@ -35,14 +38,13 @@ try {
 		->setPassword($clientPass)																						// Set password
 		->setUseTls(true)																						// Use TLS
 		->setTlsSelfSignedAllowed(true)																// Allow self-signed certificates
-		->setTlsCertificateAuthorityFile('../certs/192.168.95.115/ca-root-cert.crt')			// Root certificate for the client and server certificate
-		->setTlsClientCertificateFile('../certs/192.168.80.2_new/client.crt')					// Set client certificate
-		->setTlsClientCertificateKeyFile('../certs/192.168.80.2_new/client.key');				// Set client certificate key
+		->setTlsCertificateAuthorityFile("../certs/$clientIP/ca-root-cert.crt")				// Root certificate for the client and server certificate
+		->setTlsClientCertificateFile("../certs/$clientIP/client.crt")							// Set client certificate
+		->setTlsClientCertificateKeyFile("../certs/$clientIP/client.key");					// Set client certificate key
 
 	$mqtt->connect($connectionSettings, true);															// Connect to the MQTT broker with the above connection settings and with a clean session.
-
-	$mqtt->subscribe('hospital/#', function ($topic, $message) {											// Recursively subscribe to hospital/
-		echo sprintf("%s:%s\n", $topic, $message);																// Print the topic and message whenever we receive a message
+	$mqtt->subscribe('hospital/#', function ($topic, $message) {												// Recursively subscribe to hospital/
+		file_put_contents('mqtt.csv', "$topic,$message", LOCK_EX);
 	}, 0);																								// Set the QoS to 0
 
 	$mqtt->loop(true);																						// Continuously listen for messages
