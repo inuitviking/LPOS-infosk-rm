@@ -14,7 +14,7 @@ RUN dnf upgrade --refresh -y; \
     dnf install http://rpms.remirepo.net/enterprise/remi-release-9.rpm -y; \
     dnf update -y; \
     dnf module enable php:remi-8.0 -y; \
-    dnf install php php-cli php-curl php-mysqlnd php-gd php-opcache php-zip php-intl php-common php-bcmath php-imap php-imagick php-xmlrpc php-json php-readline php-memcached php-redis php-mbstring php-apcu php-xml php-dom php-fpm vim-enhanced httpd curl git zip unzip wget jq -y; \
+    dnf install php php-cli php-curl php-mysqlnd php-gd php-opcache php-zip php-intl php-common php-bcmath php-imap php-imagick php-xmlrpc php-json php-readline php-memcached php-redis php-mbstring php-apcu php-xml php-dom php-fpm vim-enhanced httpd mod_ssl openssh curl git zip unzip wget jq -y; \
     php -v;
 # Copy the backend source files
 COPY ./src/* /var/www/src/
