@@ -44,4 +44,4 @@ RUN mkdir -p /run/php-fpm; \
 # Clean dnf caches to save space
 RUN dnf clean all;
 # php-fpm runs in the background, while httpd runs in the foreground, successfully creating a PHP/APACHE image based on Rocky Linux
-CMD php-fpm; /usr/sbin/httpd -DFOREGROUND
+CMD php-fpm;  php html/mqttClient.php &; php html/comet.php start -d; /usr/sbin/httpd -DFOREGROUND

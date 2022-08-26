@@ -1,5 +1,5 @@
 <?php
-require_once '../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 $app = new Comet\Comet([
 	'host' => '127.0.0.1',
